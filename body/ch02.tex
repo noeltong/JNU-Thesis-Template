@@ -1,0 +1,224 @@
+% !Mode:: "TeX:UTF-8"
+% !TeX encoding = UTF-8 Unicode
+% !TeX program = xelatex
+% !TeX root = ../root.tex
+
+
+\chapter{文档中一些格式的实现方式}
+\label{ch02}
+
+\section{字体与字号}
+
+\LaTeX{}提供了多种字体与字号的设置方式。字号大小在本模板中已经预先定义。
+
+\begin{table}[h]
+    \centering
+    \caption{不同类型的文字形式}
+    \label{table1}
+    \begin{tabular}{cc}
+    \toprule
+    命令 & 效果  \\
+    \midrule
+    \texttt{\textbackslash textbf\{江南大学\}}  & \textbf{江南大学} \\
+    \texttt{\textbackslash texttt\{江南大学\}}  & \texttt{江南大学} \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\section{浮动体}
+
+\subsection{表格}
+
+在江南大学本科生毕业设计（论文）模板中，表格要求为三线表，且表格标题位于表格主体的上方，相对于表格居中对齐。
+
+在\LaTeX{}中，表格的实现需要在\texttt{table}环境中，以\texttt{\&}表示分列，以\texttt{\textbackslash\textbackslash}表示换行。例如
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, numbers=left, numberstyle=\tiny, frame=shadowbox]
+    \begin{table}[h]
+        \centering
+        \caption{这是一个表格示例}
+        \label{table1}
+        \begin{tabular}{cccc}
+        \toprule
+        第一列 & 第二列 & 第三列 & 第四列 \\
+        \midrule
+        1   & 2   & 3   & 4   \\
+        5   & 6   & 7   & 8   \\
+        \bottomrule
+        \end{tabular}
+    \end{table}
+\end{lstlisting}
+
+在文档的相应位置插入以上代码，得到的结果即为
+
+\begin{table}[h]
+    \centering
+    \caption{这是一个表格示例}
+    \label{table1}
+    \begin{tabular}{cccc}
+    \toprule
+    第一列 & 第二列 & 第三列 & 第四列 \\
+    \midrule
+    1   & 2   & 3   & 4   \\
+    5   & 6   & 7   & 8   \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+如果表格行距过大或过小，可以通过\texttt{spacing}宏包设置。
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, numbers=left, numberstyle=\tiny, frame=shadowbox]
+    \begin{table}[h]
+        \centering
+        \caption{这是一个表格示例}
+        \label{table1}
+        \begin{spacing}{0.5}
+        \begin{tabular}{cccc}
+        \toprule
+        第一列 & 第二列 & 第三列 & 第四列 \\
+        \midrule
+        1   & 2   & 3   & 4   \\
+        5   & 6   & 7   & 8   \\
+        \bottomrule
+        \end{tabular}
+        \end{spacing}
+    \end{table}
+\end{lstlisting}
+
+\begin{table}[h]
+    \centering
+    \caption{这是一个表格示例}
+    \label{table1}
+    \begin{spacing}{0.5}
+    \begin{tabular}{cccc}
+    \toprule
+    第一列 & 第二列 & 第三列 & 第四列 \\
+    \midrule
+    1   & 2   & 3   & 4   \\
+    5   & 6   & 7   & 8   \\
+    \bottomrule
+    \end{tabular}
+    \end{spacing}
+\end{table}
+
+\subsection{图片}
+
+图片的实现方式与表格类似。如下所示为一个最简单的图片插入方式，包含图片的居中、插入以及设置图片的标题。
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, numbers=left, numberstyle=\tiny, frame=shadowbox]
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{LOGO.png}
+        \caption{江南大学校标}
+    \end{figure}
+\end{lstlisting}
+
+其效果为
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{LOGO.png}
+    \caption{江南大学校标}
+\end{figure}
+
+其中，\texttt{\textbackslash centering}表示将图片居中，在\texttt{\textbackslash includegraphics[width=0.5\textbackslash textwidth]\{LOGO.png\}}中，前一个方括号中的内容表示图片的宽度，之后花括号中的内容为图片的完整文件名。在本模板中，预设了图片的目录为项目根目录中的\texttt{figures}文件夹。
+
+此外，还可以设置多个文件的形式，需要使用到\texttt{subfloat}宏包，此宏包已经在文档中预先插入。
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, numbers=left, numberstyle=\tiny, frame=shadowbox]
+    \begin{figure}
+        \centering
+        \subfloat[Title 1]{
+            \includegraphics[width=0.4\textwidth]{LOGO.png}
+        }
+        \subfloat[Title 2]{
+            \includegraphics[width=0.4\textwidth]{LOGO.png}
+        } \\
+        \subfloat[Title 3]{
+            \includegraphics[width=0.4\textwidth]{LOGO.png}
+        }
+        \subfloat[Title 4]{
+            \includegraphics[width=0.4\textwidth]{LOGO.png}
+        }
+        \caption{多个图片的插入方式效果预览}
+    \end{figure}
+\end{lstlisting}
+
+第八行的换行符号是为了让四张图片在第二张处换行，避免长度过长超出文档宽度。其效果如图\ref{sty2}。
+
+\begin{figure}[h]
+    \centering
+    \subfloat[Title 1]{
+        \includegraphics[width=0.4\textwidth]{LOGO.png}
+    }
+    \subfloat[Title 2]{
+        \includegraphics[width=0.4\textwidth]{LOGO.png}
+    } \\
+    \subfloat[Title 3]{
+        \includegraphics[width=0.4\textwidth]{LOGO.png}
+    }
+    \subfloat[Title 4]{
+        \includegraphics[width=0.4\textwidth]{LOGO.png}
+    }
+    \caption{多个图片的插入方式效果预览}
+    \label{sty2}
+\end{figure}
+
+\section{参考文献}
+
+在本模板中，使用\BibTeX{}管理参考文献。其文件位于根目录下的\texttt{references.bib}，参考文献的样式文件为\texttt{jn.bst}。其中，参考文献的样式不需要做更改。在论文撰写过程中。需要将参考文献的\BibTeX{}文献记录添加在\texttt{references.bib}中，在文章中进行引用，然后使用\XeLaTeX{}进行编译。
+
+文献记录不必一行一行的亲自码掉。目前在各大主流论文数据库和检索网站都提供\BibTeX{}格式的文献记录的下载。对于中文文献，可以使用中国知网\footnote{中国知网，\url{https://www.cnki.net/}}进行查询；对于英文文献，可以使用Google Scholar\footnote{Google Scholar, \url{https://scholar.google.com}，需要科学上网}或Microsoft Academic\footnote{Microsoft Academic, \url{https://academic.microsoft.com/home}}进行查询。
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, numbers=left, numberstyle=\tiny, frame=shadowbox]
+    @inproceedings{vaswani2017attention,
+	title="Attention is All you Need",
+	author="Ashish {Vaswani} and Noam {Shazeer} and Niki {Parmar} and Jakob {Uszkoreit} and Llion {Jones} and Aidan N. {Gomez} and Lukasz {Kaiser} and Illia {Polosukhin}",
+	booktitle="Proceedings of the 31st International Conference on Neural Information Processing Systems",
+	volume="30",
+	pages="5998--6008",
+	year="2017"
+    }
+\end{lstlisting}
+
+
+上面就是一个\BibTeX{}样例。以\texttt{\@}符号开始，以\texttt{\{\}}包括所有的内容，在\texttt{\{}之后紧随的是每个文献记录的key。接下来\texttt{=}之前的都是固定的条目，\texttt{=}后面的是具体的内容。\BibTeX{}靠着key识别每个记录，这样在引用的时候就不会出错了。
+
+值得一提的是，在\BibTeX{}中，文献的入口不能重复，这意味着相同的文献，其记录不能出现两次，即同一文献的记录不能重复添加。这一错误在编译时不会体现在\XeLaTeX{}与\BibTeX{}的错误信息中，需要大家在编译输出中自行作出判断。
+
+在引用时，需要用到\texttt{cite}命令。
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, numbers=left, numberstyle=\tiny, frame=shadowbox]
+    Attention的原理就是计算当前输入序列与输出向量的匹配程度，匹配度高也就是注意力集中点其相对的得分越高，其中Attention计算得到的匹配度权重，只限于当前序列对，不是像网络模型权重这样的整体权重\cite{vaswani2017attention}。
+\end{lstlisting}
+
+其效果为：
+
+\noindent Attention的原理就是计算当前输入序列与输出向量的匹配程度，匹配度高也就是注意力集中点其相对的得分越高，其中Attention计算得到的匹配度权重，只限于当前序列对，不是像网络模型权重这样的整体权重\cite{vaswani2017attention}。
+
+编译输出的参考文献样式可以参考文末的参考文献部分。
+
+\section{引用}
+
+在文章写作过程中，有时候需要对文章其他部分的内容（引用其他章节，或引用文档其他位置的图片或表格，或注明图片或表格的位置），此时需要使用引用。一个简单的例子为
+
+江南大学标志如图\ref{sty1}所示。
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{LOGO.png}
+    \caption{江南大学校标}
+    \label{sty1}
+\end{figure}
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, numbers=left, numberstyle=\tiny, frame=shadowbox]
+    江南大学标志如图\ref{sty1}所示。
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{LOGO.png}
+        \caption{江南大学校标}
+        \label{sty1}
+    \end{figure}    
+\end{lstlisting}

@@ -1,0 +1,45 @@
+% !Mode:: "TeX:UTF-8"
+% !TeX encoding = UTF-8 Unicode
+% !TeX program = xelatex
+% !TeX root = ../root.tex
+
+
+\chapter{环境与编译}
+\label{ch03}
+
+\section{概述}
+
+本章将会对模板使用的具体步骤进行描述。
+
+\section{预备工作}
+
+\begin{enumerate}
+    \item 对\texttt{setup/settings.tex}中文章的标题和作者进行设置。
+    \item 修改\texttt{cover.doc}，并生成\texttt{cover.pdf}，替换原有的\texttt{cover.pdf}。
+    \item 修改（如有必要）\texttt{setup/userdefs.tex}添加用户自定义符号或命令。
+\end{enumerate}
+
+\section{撰写正文}
+
+模板已经将文档划分为了若干文件，增加了编译速度。
+
+首先修改\texttt{preface}文件夹中的两个文件，得到中文摘要和英文摘要，并修改文末的关键词。此时根据设计的类型（论文或设计），修改\texttt{jnthesis.cls}文件中第64行与第153行的“设计总说明”为对应的类型（“摘\~要”或“设计总说明”）。
+
+其次，修改\texttt{body}文件夹下的若干文件，并根据章节的编排在\texttt{main.tex}里增加对应行来加入对应的文件或者删除或注释掉无用的行。同时，根据文章的参考文献，在\texttt{references.bib}中添加对应的信息，并在正文中相应位置\texttt{cite}对应的key。
+
+在正文撰写完成之后，修改\texttt{appendix}文件夹下的两个文件，分别为致谢以及发表的论文列表。若没有论文成果发表，需要在\texttt{root.tex}中注释掉第28行。
+
+\section{编译}
+
+由于模板使用了\BibTeX{}，包含了引用，完整的编译过程为：
+
+\begin{enumerate}
+    \item \XeLaTeX{}
+    \item \XeLaTeX{}
+    \item \BibTeX{}
+    \item \XeLaTeX{}
+\end{enumerate}
+
+如果更改了章节编排，包括新增章节、修改章节顺序或删除章节，以及增加了引用等，正确的\texttt{root.pdf}文件会在执行两次\XeLaTeX{}编译之后产生。
+
+如果修改了参考文献，则需要完整执行一次上述的四次编译才可以得到正确的\texttt{root.pdf}文件。

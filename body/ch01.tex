@@ -1,0 +1,110 @@
+% !Mode:: "TeX:UTF-8"
+% !TeX encoding = UTF-8 Unicode
+% !TeX program = xelatex
+% !TeX root = ../root.tex
+
+
+\chapter{关于\LaTeX{}}
+\label{ch01}
+
+\section{\LaTeX{}简介}
+
+\LaTeX{}是一种基于\TeX{}的排版系统，由美国计算机学家莱斯利·兰伯特（Leslie Lamport）在20世纪80年代初期开发，利用这种格式，即使使用者没有排版和程序设计的知识也可以充分发挥由\TeX{}所提供的强大功能，能在几天、甚至几小时内生成很多具有书籍质量的印刷品。对于生成复杂表格和数学公式，这一点表现得尤为突出。因此它非常适用于生成高印刷质量的科技和数学类文档。这个系统同样适用于生成从简单的信件到完整书籍的所有其他种类的文档。
+
+\section{编译环境的介绍}
+
+坐镇所使用的编译环境为TeX Live 2020 + Visual Studio Code，其中Visual Studio Code需要添加\LaTeX{} Workshop插件。
+
+\section{\LaTeX{}的基本知识}
+
+\subsection{一个\LaTeX{}文档的基本结构}
+
+一个简单的\LaTeX{}文档如下所示。
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, numbers=left, numberstyle=\tiny, frame=shadowbox]
+\documentclass{article}
+    
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}
+    
+\title{一篇简单的\LaTeX{}文档}
+\author{Noel Tong}
+\date{\today}
+    
+\begin{document}
+    
+    \maketitle
+        
+    这是一篇简单的\LaTeX{}文档。
+    
+\end{document}
+\end{lstlisting}
+
+将文档使用\XeLaTeX{}编译，得到结果如图\ref{example-01}所示。在接下来的内容里，我将对这个简单的文档逐句进行解释，帮助大家对\LaTeX{}的使用方法建立一个初步的了解。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{example.png}
+    \caption{示例结果}
+    \label{example-01}
+\end{figure}
+
+文件第一行\texttt{\textbackslash documentclass\{article\}}声明了文章的类型。在\LaTeX{}中，共有三种文档类型，即\texttt{book}，\texttt{report}和\texttt{article}。三种不同的文档类型，拥有不同的层次深度。
+
+\begin{itemize}
+    \item \texttt{book}类：\texttt{part}，\texttt{chapter}，\texttt{section}和\texttt{subsection}，但是没有摘要。
+    \item \texttt{report}类：\texttt{part}，\texttt{chapter}，\texttt{section}，\texttt{subsection}，可以有摘要，且摘要位于单独一页上，有页码。
+    \item \texttt{article}类：\texttt{part}，\texttt{section}，\texttt{subsection}，没有\texttt{chapter}，可以有摘要，摘要紧接标题头位于第一页上。
+\end{itemize}
+
+对于语句\texttt{\textbackslash documentclass\{article\}}，还可以设定一些其他的附加属性，其格式为
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, frame=shadowbox]
+    \documentclass[option]{class}
+\end{lstlisting}
+例如
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, frame=shadowbox]
+    \documentclass[11pt,twoside,a4paper]{article}
+\end{lstlisting}
+这条命令会引导\LaTeX{}使用\texttt{article}格式、11磅大小的字体来排版该文档，并得到在A4纸上双面打印的效果。除此以外，还有若干其他格式可以进行设定。其他可设定的格式在此处不加以赘述。
+
+在\texttt{\textbackslash documentclass\{article\}}与\texttt{\textbackslash begin\{document\}}之间的部分称为文章的\textbf{导言区}。在导言区中，我们通过若干命令对文章的一些整体格式与要素进行定义或设置。此外，我们在导言区中使用\texttt{\textbackslash usepackage\{package\}}来引用一些宏包，实现一些我们需要但原生\LaTeX{}中不支持的样式。
+
+例如，在原生的几款\LaTeX{}编辑器中，我们需要使用\XeLaTeX{}编辑中文。但\XeLaTeX{}并非原生支持中文，我们需要另外引入宏包\texttt{xeCJK}来引入中文字符的支持，并使用命令\texttt{\textbackslash setCJKmainfont\{SimSun\}}设置中文字体为宋体。这两条命令均位于导言区中，设置了文章的整体格式。
+
+对于一篇文章，标题、作者和编辑日期需要规定，在导言区中，我们使用\texttt{\textbackslash title\{title\}}来规定文章的标题，使用\texttt{\textbackslash author\{author\}}来规定文章的作者，使用\texttt{\textbackslash date\{date\}}来规定文章的日期。其中，\texttt{\textbackslash date\{\textbackslash today\}}会在编译时自动将日期设为编译时的日期；若输入\texttt{\textbackslash date\{\}}则会在输出中隐藏日期。
+
+在导言区的设置完成之后，我们使用\texttt{\textbackslash begin\{document\}}进入正文区。
+
+正文区中，首先使用\texttt{\textbackslash maketitle}显示设定的文章标题、作者与日期，然后依照自己拟定的章节结构撰写正文内容。最后使用\texttt{\textbackslash end\{document\}}结束文章。
+
+\subsection{\LaTeX{}中的浮动体}
+
+\LaTeX{}中每个浮动体都从属于一种浮动体类型。默认情况下，\LaTeX{}定义了两种浮动体类型，即\texttt{figure}和\texttt{table}。文档类和宏包的作者，可以在其中定义额外的浮动体类型（比如\texttt{listings}宏包定义了用于排版代码清单的浮动体；\texttt{algirithm}宏包定义了用于排版算法的浮动体），用户也可以在导言区定义自己需要的浮动体类型（借助\texttt{float}宏包）。浮动体从属的类型，在多个方面会影响浮动体的最终位置。比如说，每个浮动体类型都有默认的位置选项，如果它们没有被浮动体本身的位置选项覆盖的话，那么就会生效。 需要特别强调的是，同一个浮动体类型中的不同浮动体，它们的相对顺序是固定的。也就是说，不管浮动体的位置如何移动，\texttt{Figure 1}，\texttt{Figure 2}，\texttt{Figure 3}这样的顺序是始终保持的。不过，不同类型的浮动体之间，其顺序则可能出现穿插。比如，如果有\texttt{Table 1}，则可以出现在相对上述三个图片的任意位置。
+
+在同一栏（\texttt{column}）当中，\LaTeX{}设置了两个浮动区域：栏的顶部和底部。对于双栏排版来说，\LaTeX{}还提供了额外的区域：跨过双栏的顶部。 此外，\LaTeX{}也有所谓的“浮动栏”或者“浮动页”的设定。顾名思义，浮动栏和浮动页就是只有浮动体的栏或者页。 最后，\LaTeX{}也可以将浮动体放在文本内容的中间（当然，这需要显式指定）。
+
+为了指定浮动体放置的位置，手稿作者需要给浮动体环境传入浮动体位置选项（通过环境的可选参数）。如果手稿作者没有显式提供位置选项，那么\LaTeX{}则会使用浮动体所述类型所指定的位置选项。
+
+\begin{lstlisting}[language=tex, breaklines=true, basicstyle=\ttfamily, frame=shadowbox]
+    \begin{figure}[!htbp]
+        // ...
+    \end{figure}
+\end{lstlisting}
+
+\LaTeX{}中默认的浮动体位置选项有五种，手稿作者可以以任意顺序组合使用这些选项。它们是
+\begin{itemize}
+    \item \texttt{!}表示忽略一些严格的限制条件；
+    \item \texttt{h}表示如有可能，则放在当前位置；
+    \item \texttt{t}表示该浮动体允许置于栏的顶部；
+    \item \texttt{b}表示该浮动体允许置于栏的底部；
+    \item \texttt{p}表示该浮动体允许置于浮动栏或浮动页。
+\end{itemize}
+
+这也就是说，如果某个字符没有出现在浮动体位置选项中，则\LaTeX{}在尝试输出该浮动体时，就不会试着将其放置在对应的位置。需要再次强调的是，浮动体位置选项的指定是一个组合问题，没有优先级的区分。因此，\texttt{htbp}和\texttt{pbth}是等效的。
+
+\subsection{参考文献与\BibTeX{}}
+
+参考文献使用\BibTeX{}进行管理。\BibTeX{}是\TeX{}的衍生系统，专门处理参考文献。
+
+\section{本文的主要内容}
+
